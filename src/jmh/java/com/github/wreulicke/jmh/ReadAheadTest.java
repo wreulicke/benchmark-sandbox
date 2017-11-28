@@ -13,12 +13,17 @@ public class ReadAheadTest {
 
   ObjectMapper mapper;
 
-  Generator generator;
+  private String json;
+
+  @Setup(Level.Iteration)
+  public void setupInIteration() {
+    Generator generator = new Generator();
+    json = generator.generate();
+  }
 
   @Setup
   public void setup() {
     mapper = new ObjectMapper();
-    generator = new Generator();
   }
 
   interface ITake {
@@ -126,16 +131,16 @@ public class ReadAheadTest {
 
   @Benchmark
   public void case1() {
-    new NaiveImpl().take(generator.generate());
+    new NaiveImpl().take(json);
   }
 
   @Benchmark
   public void case2() {
-    new ReadAheadImpl().take(generator.generate());
+    new ReadAheadImpl().take(json);
   }
 
   @Benchmark
   public void case3() {
-    new ReadAheadImpl2().take(generator.generate());
+    new ReadAheadImpl2().take(json);
   }
 }
