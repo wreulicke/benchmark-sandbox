@@ -1,6 +1,7 @@
 package com.github.wreulicke.jmh;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.openjdk.jmh.annotations.*;
 
@@ -45,6 +46,20 @@ public class ReadAheadTest {
           Map<String, Object> m = mapper.readValue(json, new TypeReference<Map<String, Object>>() {
           });
           return m.toString();
+        } catch (IOException e) {
+          return json;
+        }
+      }
+      return json;
+    }
+  }
+
+  class ReadAheadImpl2 implements ITake {
+    public Object take(String json) {
+      if (json.startsWith("{") && json.endsWith("}")) {
+        try {
+          JsonNode jsonNode = mapper.readTree(json);
+          return jsonNode.toString();
         } catch (IOException e) {
           return json;
         }
@@ -117,5 +132,10 @@ public class ReadAheadTest {
   @Benchmark
   public void case2() {
     new ReadAheadImpl().take(generator.generate());
+  }
+
+  @Benchmark
+  public void case3() {
+    new ReadAheadImpl2().take(generator.generate());
   }
 }
