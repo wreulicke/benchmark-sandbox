@@ -1,0 +1,71 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'org.junit.platform.gradle.plugin'
+apply plugin: 'eclipse'
+apply plugin: 'jacoco'
+apply plugin: "me.champeau.gradle.jmh"
+
+group = 'com.github.wreulicke'
+version = '0.0.1-SNAPSHOT'
+
+buildscript {
+    repositories {
+   		jcenter()
+        maven {
+           url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
+        classpath "me.champeau.gradle:jmh-gradle-plugin:0.4.4"
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+description = "empty"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+tasks.withType(JavaCompile) {
+	options.encoding = 'UTF-8'
+}
+
+jacoco {
+    applyTo junitPlatformTest
+}
+
+jmh {
+   humanOutputFile = project.file("${project.buildDir}/reports/jmh/result-for-human.txt")
+   resultsFile = project.file("${project.buildDir}/reports/jmh/result.json")
+   resultFormat = 'JSON'
+   fork = 10
+   warmupIterations = 20
+   iterations = 50
+}
+
+task jacoco(type: JacocoReport) {
+    classDirectories = files("build/classes/java/main")
+    sourceDirectories = files("src/main/java")
+    executionData = files('build/jacoco/junitPlatformTest.exec')
+}
+
+
+dependencies {
+    compile 'org.junit.jupiter:junit-jupiter-api:5.0.0'
+    compile 'org.junit.jupiter:junit-jupiter-params:5.0.0'
+
+    testRuntime "org.junit.jupiter:junit-jupiter-engine:5.0.0"
+    testRuntime("org.junit.platform:junit-platform-launcher:1.0.0") // for IDE
+    
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.8.8'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.8.8'
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.8.8'
+
+    compileOnly 'org.projectlombok:lombok:1.16.18'
+    testCompileOnly 'org.projectlombok:lombok:1.16.18'
+
+    testCompile 'org.assertj:assertj-core:3.8.0'
+}

@@ -1,0 +1,67 @@
+version: 2
+workflows:
+  version: 2
+  all:
+    jobs:
+      - build
+      - build-benchmark
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    working_directory: ~/repo
+    environment:
+      _JAVA_OPTIONS: -Xmx3G
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "build.gradle" }}
+          - v1-dependencies-
+      - run: ./gradlew dependencies
+      
+      - save_cache:
+          paths:
+            - ~/.m2
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle" }}
+        
+      - run: ./gradlew test
+      - run:
+          name: Create jacoco report
+          command: ./gradlew jacoco
+
+      - store_artifacts:
+          name: Store artifacts
+          path: build/reports
+          destination: artifacts
+
+      - store_test_results:
+          path: build/test-results
+
+  build-benchmark:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    working_directory: ~/repo
+    environment:
+      _JAVA_OPTIONS: -Xmx3G
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "build.gradle" }}
+          - v1-dependencies-
+      - run: 
+          no_output_timeout: 1h
+          command: ./gradlew jmh
+
+      - save_cache:
+          paths:
+            - ~/.m2
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle" }}
+
+      - store_artifacts:
+          name: Store artifacts
+          path: build/reports
+          destination: artifacts

@@ -1,0 +1,25 @@
+.idea/**
+/target/**
+*.iml
+database.db.mv.db
+/repos/**
+/workspace/**
+/job/**
+/test/**
+/content/**
+.gradle
+out/
+
+# for eclipse
+bin/
+.apt_generated/**
+.settings/**
+.project
+.factorypath
+.classpath
+
+# for gradle
+!gradle-wrapper.jar
+build/
+
+.gradletasknamecache
