@@ -157,4 +157,9 @@ public class ReadAheadTest {
   public void case3() {
     new ReadAheadImpl2().take(json);
   }
+  
+  @Benchmark
+  public void case4() {
+    new ReadAheadImpl3().take(json);
+  }
 }
