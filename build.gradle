@@ -54,12 +54,6 @@ task jacoco(type: JacocoReport) {
 
 
 dependencies {
-    compile 'org.junit.jupiter:junit-jupiter-api:5.0.0'
-    compile 'org.junit.jupiter:junit-jupiter-params:5.0.0'
-
-    testRuntime "org.junit.jupiter:junit-jupiter-engine:5.0.0"
-    testRuntime("org.junit.platform:junit-platform-launcher:1.0.0") // for IDE
-    
     compile 'com.fasterxml.jackson.core:jackson-databind:2.8.8'
     compile 'com.fasterxml.jackson.core:jackson-annotations:2.8.8'
     compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.8.8'
