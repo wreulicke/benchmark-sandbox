@@ -33,11 +33,11 @@ public class ReadAheadTest {
   class NaiveImpl implements ITake {
 
     @Override
-    public String take(String json) {
+    public Object take(String json) {
       try {
         Map<String, Object> m = mapper.readValue(json, new TypeReference<Map<String, Object>>() {
         });
-        return m.toString();
+        return m;
       } catch (IOException e) {
         return json;
       }
@@ -50,7 +50,7 @@ public class ReadAheadTest {
         try {
           Map<String, Object> m = mapper.readValue(json, new TypeReference<Map<String, Object>>() {
           });
-          return m.toString();
+          return m;
         } catch (IOException e) {
           return json;
         }
@@ -64,7 +64,21 @@ public class ReadAheadTest {
       if (json.startsWith("{") && json.endsWith("}")) {
         try {
           JsonNode jsonNode = mapper.readTree(json);
-          return jsonNode.toString();
+          return jsonNode;
+        } catch (IOException e) {
+          return json;
+        }
+      }
+      return json;
+    }
+  }
+
+  class ReadAheadImpl3 implements ITake {
+    public Object take(String json) {
+      if (json.startsWith("{") && json.endsWith("}")) {
+        try {
+          Map m = mapper.readValue(json, Map.class);
+          return m;
         } catch (IOException e) {
           return json;
         }
