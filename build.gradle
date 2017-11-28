@@ -48,9 +48,9 @@ jmh {
    humanOutputFile = project.file("${project.buildDir}/reports/jmh/result-for-human.txt")
    resultsFile = project.file("${project.buildDir}/reports/jmh/result.json")
    resultFormat = 'JSON'
-   fork = 10
+   fork = 4
    warmupIterations = 20
-   iterations = 50
+   iterations = 10
    jmhVersion = '1.19' // Specifies JMH version
 }
 
