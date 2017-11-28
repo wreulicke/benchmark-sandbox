@@ -3,10 +3,10 @@ apply plugin: 'maven'
 apply plugin: 'org.junit.platform.gradle.plugin'
 apply plugin: 'eclipse'
 apply plugin: 'jacoco'
+apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: "me.champeau.gradle.jmh"
 
 group = 'com.github.wreulicke'
-version = '0.0.1-SNAPSHOT'
 
 buildscript {
     repositories {
@@ -17,6 +17,7 @@ buildscript {
     }
     dependencies {
         classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
+        classpath "com.github.jengelman.gradle.plugins:shadow:2.0.1"
         classpath "me.champeau.gradle:jmh-gradle-plugin:0.4.4"
     }
 }
@@ -33,6 +34,12 @@ tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
 }
 
+jmhJar {
+    manifest {
+        attributes "Main-Class": "org.openjdk.jmh.Main"
+    }
+}
+
 jacoco {
     applyTo junitPlatformTest
 }
@@ -44,6 +51,7 @@ jmh {
    fork = 10
    warmupIterations = 20
    iterations = 50
+   jmhVersion = '1.19' // Specifies JMH version
 }
 
 task jacoco(type: JacocoReport) {
@@ -61,5 +69,5 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.16.18'
     testCompileOnly 'org.projectlombok:lombok:1.16.18'
 
-    testCompile 'org.assertj:assertj-core:3.8.0'
+    compile 'org.openjdk.jmh:jmh-core:1.19'
 }
