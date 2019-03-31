@@ -44,7 +44,6 @@ public class WorkStealingPoolTest {
 		}
 	}
 	
-	
 	@State(Scope.Benchmark)
 	public static class FixedPoolState2 {
 		ExecutorService fixedThreadPool;
@@ -64,95 +63,95 @@ public class WorkStealingPoolTest {
 	public void case1(FixedPoolState2 state) throws Exception {
 		state.fixedThreadPool.submit(() -> {
 			
-		IntStream.range(0, 9)
-			.mapToObj(n -> state.fixedThreadPool.submit(() -> {
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}))
-			.parallel()
-			.forEach(f-> {
-				try {
-					f.get();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				}
-			});
+			IntStream.range(0, 9)
+				.mapToObj(n -> state.fixedThreadPool.submit(() -> {
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}))
+				.parallel()
+				.forEach(f -> {
+					try {
+						f.get();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						e.printStackTrace();
+					}
+				});
 		}).get();
 	}
 	
 	@Benchmark
 	public void case2(FixedPoolState2 state) throws Exception {
 		state.fixedThreadPool.submit(() -> {
-		IntStream.range(0, 9)
-			.mapToObj(n -> state.fixedThreadPool.submit(() -> {
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}))
-			.forEach(f-> {
-				try {
-					f.get();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				}
-			});
+			IntStream.range(0, 9)
+				.mapToObj(n -> state.fixedThreadPool.submit(() -> {
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}))
+				.forEach(f -> {
+					try {
+						f.get();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						e.printStackTrace();
+					}
+				});
 		}).get();
 	}
 	
 	@Benchmark
 	public void case3(WorkStealingPoolState state) throws Exception {
 		state.workStealingPool.submit(() -> {
-		IntStream.range(0, 9)
-			.mapToObj(n -> n)
-			.parallel()
-			.forEach(n -> {
-				try {
-					state.workStealingPool.submit(() -> {
-						try {
-							Thread.sleep(10);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}).get();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				}
-			});
+			IntStream.range(0, 9)
+				.mapToObj(n -> n)
+				.parallel()
+				.forEach(n -> {
+					try {
+						state.workStealingPool.submit(() -> {
+							try {
+								Thread.sleep(10);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}).get();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						e.printStackTrace();
+					}
+				});
 		}).get();
 	}
 	
 	@Benchmark
 	public void case4(FixedPoolState state) throws Exception {
 		state.fixedThreadPool.submit(() -> {
-		IntStream.range(0, 9)
-			.mapToObj(n -> n)
-			.parallel()
-			.forEach(n -> {
-				try {
-					state.fixedThreadPool.submit(() -> {
-						try {
-							Thread.sleep(10);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					}).get();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				}
-			});
+			IntStream.range(0, 9)
+				.mapToObj(n -> n)
+				.parallel()
+				.forEach(n -> {
+					try {
+						state.fixedThreadPool.submit(() -> {
+							try {
+								Thread.sleep(10);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}).get();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						e.printStackTrace();
+					}
+				});
 		}).get();
 	}
 	
