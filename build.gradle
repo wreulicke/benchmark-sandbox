@@ -1,6 +1,5 @@
 apply plugin: 'java'
 apply plugin: 'maven'
-apply plugin: 'org.junit.platform.gradle.plugin'
 apply plugin: 'eclipse'
 apply plugin: 'jacoco'
 apply plugin: 'com.github.johnrengelman.shadow'
@@ -16,9 +15,8 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.0.0'
-        classpath "com.github.jengelman.gradle.plugins:shadow:2.0.1"
-        classpath "me.champeau.gradle:jmh-gradle-plugin:0.4.4"
+        classpath "com.github.jengelman.gradle.plugins:shadow:4.0.2"
+        classpath "me.champeau.gradle:jmh-gradle-plugin:0.4.8"
     }
 }
 
@@ -34,14 +32,16 @@ tasks.withType(JavaCompile) {
 	options.encoding = 'UTF-8'
 }
 
+test {
+    useJUnitPlatform {
+        includeEngines 'junit-jupiter'
+    }
+}
+
 jmhJar {
     manifest {
         attributes "Main-Class": "org.openjdk.jmh.Main"
     }
-}
-
-jacoco {
-    applyTo junitPlatformTest
 }
 
 jmh {
@@ -53,13 +53,6 @@ jmh {
    iterations = 10
    jmhVersion = '1.19' // Specifies JMH version
 }
-
-task jacoco(type: JacocoReport) {
-    classDirectories = files("build/classes/java/main")
-    sourceDirectories = files("src/main/java")
-    executionData = files('build/jacoco/junitPlatformTest.exec')
-}
-
 
 dependencies {
     compile 'com.fasterxml.jackson.core:jackson-databind:2.8.8'
