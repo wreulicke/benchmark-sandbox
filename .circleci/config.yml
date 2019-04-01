@@ -29,7 +29,7 @@ jobs:
       - run: ./gradlew test
       - run:
           name: Create jacoco report
-          command: ./gradlew jacoco
+          command: ./gradlew jacocoTestReport
 
       - store_artifacts:
           name: Store artifacts

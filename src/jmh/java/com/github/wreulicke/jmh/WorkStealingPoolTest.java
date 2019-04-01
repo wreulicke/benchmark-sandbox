@@ -3,6 +3,7 @@ package com.github.wreulicke.jmh;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 import org.openjdk.jmh.annotations.Benchmark;
@@ -66,7 +67,7 @@ public class WorkStealingPoolTest {
 			IntStream.range(0, 9)
 				.mapToObj(n -> state.fixedThreadPool.submit(() -> {
 					try {
-						Thread.sleep(10);
+						TimeUnit.SECONDS.sleep(10);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -90,7 +91,7 @@ public class WorkStealingPoolTest {
 			IntStream.range(0, 9)
 				.mapToObj(n -> state.fixedThreadPool.submit(() -> {
 					try {
-						Thread.sleep(10);
+						TimeUnit.SECONDS.sleep(10);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -117,7 +118,7 @@ public class WorkStealingPoolTest {
 					try {
 						state.workStealingPool.submit(() -> {
 							try {
-								Thread.sleep(10);
+								TimeUnit.SECONDS.sleep(10);
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
@@ -141,7 +142,7 @@ public class WorkStealingPoolTest {
 					try {
 						state.fixedThreadPool.submit(() -> {
 							try {
-								Thread.sleep(10);
+								TimeUnit.SECONDS.sleep(10);
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}

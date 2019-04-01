@@ -51,7 +51,7 @@ jmh {
    fork = 4
    warmupIterations = 20
    iterations = 10
-   jmhVersion = '1.19' // Specifies JMH version
+   jmhVersion = '1.21' // Specifies JMH version
 }
 
 dependencies {
