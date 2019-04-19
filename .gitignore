@@ -13,7 +13,7 @@ out/
 # for eclipse
 bin/
 .apt_generated/**
-.settings/**
+.settings/
 .project
 .factorypath
 .classpath
