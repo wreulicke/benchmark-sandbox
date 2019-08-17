@@ -22,6 +22,7 @@ buildscript {
 
 repositories {
     jcenter()
+    maven { url 'https://jitpack.io' }
 }
 
 description = "empty"
@@ -60,6 +61,7 @@ dependencies {
     compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.8.8'
     compile "com.fasterxml.uuid:java-uuid-generator:3.2.0"
     compile "de.huxhorn.sulky:de.huxhorn.sulky.ulid:8.2.0"
+    compile 'com.github.wreulicke.bricks:concurrency-limit-task-executor:0098ca1ee4'
 
     compileOnly 'org.projectlombok:lombok:1.16.18'
     testCompileOnly 'org.projectlombok:lombok:1.16.18'
